@@ -3,18 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Fidget Toy: Pop It Simulator</title>
+    <title>Digital Fidget Toys: Pop It & Project Triangle</title>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+            gap: 40px;
         }
-        #container {
+        h2 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        #pop-it-container {
             display: grid;
             grid-template-columns: repeat(5, 60px);
             grid-gap: 10px;
@@ -38,22 +45,110 @@
             background: radial-gradient(circle at 30% 30%, #ccc, #fff);
             box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.1);
         }
+        #triangle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #ddd;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            gap: 15px;
+        }
+        .toggle-group {
+            display: flex;
+            gap: 20px;
+        }
+        .toggle-label {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            font-size: 1em;
+            user-select: none;
+            text-align: center;
+        }
+        .toggle-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: background-color 0.4s;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.4s;
+        }
+        .toggle-input:checked + .toggle-slider {
+            background-color: #2196F3;
+        }
+        .toggle-input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
     </style>
 </head>
 <body>
-    <div id="container"></div>
+    <div id="pop-it-container">
+        <h2>Pop It Simulator</h2>
+        <!-- Bubbles will be added via JS -->
+    </div>
+    <div id="triangle-container">
+        <h2>Project Triangle (Pick Only Two)</h2>
+        <div class="toggle-group">
+            <label class="toggle-label">
+                Good
+                <input type="checkbox" class="toggle-input" id="good">
+                <span class="toggle-slider"></span>
+            </label>
+            <label class="toggle-label">
+                Fast
+                <input type="checkbox" class="toggle-input" id="fast">
+                <span class="toggle-slider"></span>
+            </label>
+            <label class="toggle-label">
+                Cheap
+                <input type="checkbox" class="toggle-input" id="cheap">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+    </div>
     <script>
-        const container = document.getElementById('container');
+        // Pop It Simulator
+        const popItContainer = document.querySelector('#pop-it-container');
         const numBubbles = 25; // 5x5 grid
-
         for (let i = 0; i < numBubbles; i++) {
             const bubble = document.createElement('div');
             bubble.classList.add('bubble');
             bubble.addEventListener('click', () => {
                 bubble.classList.toggle('popped');
             });
-            container.appendChild(bubble);
+            popItContainer.appendChild(bubble);
         }
+
+        // Project Triangle Logic
+        const toggles = document.querySelectorAll('.toggle-input');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('change', () => {
+                const checkedCount = Array.from(toggles).filter(t => t.checked).length;
+                if (checkedCount > 2) {
+                    toggle.checked = false; // Prevent the third from staying on
+                }
+            });
+        });
     </script>
 </body>
 </html>
