@@ -2,134 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Digital Fidget Toys: Pop It & Project Triangle</title>
-  
-  <!-- 🔊 Sound Files -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fidget Toy</title>
+
+  <!-- Sounds -->
   <audio id="pop-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b733d6b43.mp3"></audio>
   <audio id="toggle-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_f5f7769c98.mp3"></audio>
-  
-  <!-- 🎨 Style -->
-  <style>
-    * {
-      box-sizing: border-box;
-    }
 
+  <style>
     body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #222;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
-      gap: 40px;
-      padding: 20px;
     }
 
-    h2 {
-      margin: 0 0 10px 0;
-      font-size: 1.2em;
-      color: #333;
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 10px;
+      width: 100%;
+      max-width: 600px;
     }
 
     #pop-it-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-      gap: 10px;
-      padding: 20px;
-      background-color: #ddd;
-      border-radius: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      max-width: 90vw;
-      width: 100%;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      max-width: 100%;
+      margin-bottom: 30px;
+      padding: 10px;
     }
 
     .bubble {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: radial-gradient(circle at 30% 30%, #fff, #ccc);
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), inset 0 -4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease-in-out, background 0.2s;
-      cursor: pointer;
-      user-select: none;
+      background-color: #eee;
+      box-shadow: inset 2px 2px 5px #ccc;
+      transition: background 0.2s, transform 0.1s;
     }
 
-    .popped {
-      transform: scale(0.85) translateY(5px);
-      background: radial-gradient(circle at 30% 30%, #ccc, #fff);
-      box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.1);
+    .bubble.popped {
+      background-color: #ffcccb;
+      box-shadow: inset -2px -2px 5px #999;
     }
 
-    #triangle-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      background-color: #ddd;
-      border-radius: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      gap: 15px;
-      width: 100%;
-      max-width: 500px;
-    }
-
-    .toggle-group {
+    /* Toggle Switch Styles */
+    .toggle-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
     }
 
-    .toggle-label {
-      display: block;
+    .toggle-switch {
       position: relative;
-      cursor: pointer;
-      font-size: 1em;
-      user-select: none;
-      text-align: center;
+      display: inline-block;
+      width: 70px;
+      height: 40px;
     }
 
     .toggle-input {
-      position: absolute;
       opacity: 0;
       width: 0;
       height: 0;
     }
 
-    .toggle-slider {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background-color: #ccc;
-      border-radius: 34px;
-      transition: background-color 0.4s;
+      transition: 0.4s;
+      border-radius: 20px;
     }
 
-    .toggle-slider:before {
+    .slider::before {
       position: absolute;
       content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
+      height: 28px;
+      width: 28px;
+      left: 6px;
+      bottom: 6px;
       background-color: white;
+      transition: 0.4s;
       border-radius: 50%;
-      transition: transform 0.4s;
     }
 
-    .toggle-input:checked + .toggle-slider {
-      background-color: #2196F3;
+    .toggle-input:checked + .slider {
+      background-color: #4CAF50;
     }
 
-    .toggle-input:checked + .toggle-slider:before {
-      transform: translateX(26px);
+    .toggle-input:checked + .slider::before {
+      transform: translateX(30px);
     }
 
-    /* 🎯 Pulse Animation */
+    /* Responsive bubbles */
+    @media (max-width: 600px) {
+      .bubble {
+        width: 50px;
+        height: 50px;
+      }
+      .toggle-switch {
+        width: 60px;
+        height: 36px;
+      }
+      .slider::before {
+        height: 24px;
+        width: 24px;
+        left: 6px;
+        bottom: 6px;
+      }
+      .toggle-input:checked + .slider::before {
+        transform: translateX(24px);
+      }
+    }
+
+    /* Pulse animation */
     .pulse {
       animation: pulse 0.3s ease-in-out;
     }
@@ -139,68 +138,35 @@
       50% { transform: scale(1.15); }
       100% { transform: scale(1); }
     }
-
-    /* 📱 Responsive Tweaks */
-    @media (max-width: 480px) {
-      h2 {
-        font-size: 1em;
-      }
-
-      .toggle-slider {
-        width: 50px;
-        height: 28px;
-      }
-
-      .toggle-slider:before {
-        width: 20px;
-        height: 20px;
-        left: 4px;
-        bottom: 4px;
-      }
-
-      .toggle-input:checked + .toggle-slider:before {
-        transform: translateX(22px);
-      }
-    }
   </style>
 </head>
 <body>
+  <h1>Fidget Toy Simulator</h1>
 
-  <div id="pop-it-container">
-    <h2>Pop It Simulator</h2>
-    <!-- Bubbles will be added via JS -->
+  <!-- Pop It Section -->
+  <div id="pop-it-container"></div>
+
+  <!-- Toggle Switches -->
+  <div class="toggle-container">
+    <label class="toggle-switch">
+      <input type="checkbox" class="toggle-input" />
+      <span class="slider"></span>
+    </label>
+    <label class="toggle-switch">
+      <input type="checkbox" class="toggle-input" />
+      <span class="slider"></span>
+    </label>
+    <label class="toggle-switch">
+      <input type="checkbox" class="toggle-input" />
+      <span class="slider"></span>
+    </label>
   </div>
 
-  <div id="triangle-container">
-    <h2>Project Triangle (Pick Only Two)</h2>
-    <div class="toggle-group">
-      <label class="toggle-label">
-        Good
-        <input type="checkbox" class="toggle-input" id="good">
-        <span class="toggle-slider"></span>
-      </label>
-      <label class="toggle-label">
-        Fast
-        <input type="checkbox" class="toggle-input" id="fast">
-        <span class="toggle-slider"></span>
-      </label>
-      <label class="toggle-label">
-        Cheap
-        <input type="checkbox" class="toggle-input" id="cheap">
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-  </div>
-
-  <!-- ⚙️ Script -->
   <script>
-    // Sounds
-    const popSound = document.getElementById('pop-sound');
-    const toggleSound = document.getElementById('toggle-sound');
-
-    // Pop It Simulator
+    // Pop It Logic
     const popItContainer = document.querySelector('#pop-it-container');
-    const numBubbles = 25;
+    const popSound = document.getElementById('pop-sound');
+    const numBubbles = 25; // 5x5 grid
 
     for (let i = 0; i < numBubbles; i++) {
       const bubble = document.createElement('div');
@@ -215,8 +181,9 @@
       popItContainer.appendChild(bubble);
     }
 
-    // Project Triangle Logic with sound + animation
+    // Toggle Logic
     const toggles = document.querySelectorAll('.toggle-input');
+    const toggleSound = document.getElementById('toggle-sound');
     const toggleOrder = [];
 
     toggles.forEach(toggle => {
